@@ -65,9 +65,11 @@ pipeline {
 
                 sh """
                 docker save ${IMAGE_NAME}:latest | gzip > image.tar.gz
-                scp -o StrictHostKeyChecking=no image.tar.gz ${APP_USER}@${APP_SERVER_HOST}:/tmp/image.tar.gz
+                
+                # Use -i to specify the private key file
+                scp -i ~/.ssh/aws-key.pem -o StrictHostKeyChecking=no image.tar.gz ${APP_USER}@${APP_SERVER_HOST}:/tmp/image.tar.gz
 
-                ssh -o StrictHostKeyChecking=no ${APP_USER}@${APP_SERVER_HOST} \
+                ssh -i ~/.ssh/aws-key.pem -o StrictHostKeyChecking=no ${APP_USER}@${APP_SERVER_HOST} \
                 'gunzip -c /tmp/image.tar.gz | docker load && rm /tmp/image.tar.gz'
                 """
             }
@@ -78,7 +80,8 @@ pipeline {
                 echo 'Starting the container on the App Server...'
 
                 sh """
-                ssh -o StrictHostKeyChecking=no ${APP_USER}@${APP_SERVER_HOST} "
+                # Use -i to specify the private key file
+                ssh -i ~/.ssh/aws-key.pem -o StrictHostKeyChecking=no ${APP_USER}@${APP_SERVER_HOST} "
                 docker stop flask_app 2>/dev/null || true
                 docker rm flask_app 2>/dev/null || true
 
@@ -97,7 +100,6 @@ pipeline {
                 """
             }
         }
-
         stage('Health Check') {
             steps {
                 echo 'Verifying deployment...'
