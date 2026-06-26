@@ -1,0 +1,8 @@
+aws_region = "ap-south-1"
+project_name = "cloud-task-manager"
+instance_type = "t3.micro"
+db_username = "admin"
+db_password = "YourSecurePassword123!"
+db_name = "taskdb"
+key_name = "jenkins"
+my_ip = "106.216.237.167"

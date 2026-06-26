@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>Add New Task</h5>
+
+            <form method="POST" action="/add" enctype="multipart/form-data">
+                <input
+                    type="text"
+                    name="title"
+                    class="form-control mb-2"
+                    placeholder="Title"
+                    required
+                >
+
+                <textarea
+                    name="desc"
+                    class="form-control mb-2"
+                    placeholder="Description"
+                ></textarea>
+
+                <input
+                    type="file"
+                    name="file"
+                    class="form-control mb-2"
+                >
+
+                <button class="btn btn-primary w-100">
+                    Add Task
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        {% for task in tasks %}
+        <div class="card mb-2 p-3">
+            <h6>{{ task.title }}</h6>
+
+            <p class="text-muted">{{ task.desc }}</p>
+
+            <span class="badge bg-{{ 'success' if task.status == 'done' else 'warning' }}">
+                {{ task.status }}
+            </span>
+
+            <form
+                method="POST"
+                action="/update/{{ task.id }}"
+                class="d-inline"
+            >
+                <select
+                    name="status"
+                    class="form-select form-select-sm d-inline w-auto"
+                >
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="done">Done</option>
+                </select>
+
+                <button class="btn btn-sm btn-outline-primary">
+                    Update
+                </button>
+            </form>
+
+            <a
+                href="/delete/{{ task.id }}"
+                class="btn btn-sm btn-outline-danger"
+            >
+                Delete
+            </a>
+        </div>
+
+        {% else %}
+        <p class="text-muted">No tasks yet. Add one!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
