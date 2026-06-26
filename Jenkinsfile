@@ -6,6 +6,7 @@ pipeline {
     environment {
     IMAGE_NAME = 'cloud-task-manager'
     APP_SERVER_HOST = credentials('app-server-host')
+    RDS_PASSWORD = credentials('rds-password')
     }
 
     stages {
