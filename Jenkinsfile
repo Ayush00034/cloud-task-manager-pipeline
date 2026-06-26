@@ -3,12 +3,6 @@ pipeline {
         label 'ayush'
     }
 
-    environment {
-    IMAGE_NAME = 'cloud-task-manager'
-    APP_SERVER_HOST = credentials('app-server-host')
-    RDS_PASSWORD = credentials('rds-password')
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -16,18 +10,25 @@ pipeline {
             }
         }
 
-        stage('Test1') {
+        stage('Credential Test') {
             steps {
-                sh '''
-                export APP_SERVER_HOST=35.154.14.209
-                export RDS_ENDPOINT=cloud-task-manager-db.cj24i200o8mb.ap-south-1.rds.amazonaws.com:3306
-                export RDS_PASSWORD=YourSecurePassword123!
-                export S3_BUCKET=cloud-task-manager-uploads-1tmyl5
-
-                echo "Hello"
-                echo "$APP_SERVER_HOST"
-                '''
+                withCredentials([string(credentialsId: 'rds-password', variable: 'RDS_PASSWORD')]) {
+                    sh '''
+                        echo "Credential loaded successfully"
+                        echo "Password length: ${#RDS_PASSWORD}"
+                    '''
+                }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Credential test passed.'
+        }
+
+        failure {
+            echo 'Credential test failed.'
         }
     }
 }
