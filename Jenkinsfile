@@ -16,26 +16,26 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Pulling code from GitHub onto the Build Node,..,...'
+                echo 'Pulling code from GitHub onto the Build Node...'
                 echo "2nd"
                 checkout scm
             }
         }
 
         stage('Test') {
-    steps {
-        sh '''
-        echo "Creating venv..."
+            steps {
+                sh '''
+                echo "Creating venv..."
 
-        python3 -m venv venv
+                python3 -m venv venv
 
-        venv/bin/pip install --upgrade pip
-        venv/bin/pip install -r requirements.txt
+                venv/bin/pip install --upgrade pip
+                venv/bin/pip install -r requirements.txt
 
-        venv/bin/python -c "from app.app import app; print('Import OK')"
-        '''
-    }
-}
+                venv/bin/python -c "from app.app import app; print('Import OK')"
+                '''
+            }
+        }
 
         stage('Terraform Apply') {
             steps {
@@ -61,17 +61,15 @@ pipeline {
 
         stage('Ship Image to App Server') {
             steps {
-                echo 'Transferring image from Build Node to App Server...'
+                echo 'Transferring image from Build Node to App Server via native SSH...'
 
-                sshagent(credentials: ['app-server-ssh']) {
-                    sh '''
-                    docker save ${IMAGE_NAME}:latest | gzip > image.tar.gz
-                    scp -o StrictHostKeyChecking=no image.tar.gz ${APP_USER}@${APP_SERVER_HOST}:/tmp/image.tar.gz
+                sh """
+                docker save ${IMAGE_NAME}:latest | gzip > image.tar.gz
+                scp -o StrictHostKeyChecking=no image.tar.gz ${APP_USER}@${APP_SERVER_HOST}:/tmp/image.tar.gz
 
-                    ssh -o StrictHostKeyChecking=no ${APP_USER}@${APP_SERVER_HOST} \
-                    "gunzip -c /tmp/image.tar.gz | docker load && rm /tmp/image.tar.gz"
-                    '''
-                }
+                ssh -o StrictHostKeyChecking=no ${APP_USER}@${APP_SERVER_HOST} \
+                'gunzip -c /tmp/image.tar.gz | docker load && rm /tmp/image.tar.gz'
+                """
             }
         }
 
@@ -79,26 +77,24 @@ pipeline {
             steps {
                 echo 'Starting the container on the App Server...'
 
-                sshagent(credentials: ['app-server-ssh']) {
-                    sh '''
-                    ssh -o StrictHostKeyChecking=no ${APP_USER}@${APP_SERVER_HOST} "
-                    docker stop flask_app 2>/dev/null || true
-                    docker rm flask_app 2>/dev/null || true
+                sh """
+                ssh -o StrictHostKeyChecking=no ${APP_USER}@${APP_SERVER_HOST} "
+                docker stop flask_app 2>/dev/null || true
+                docker rm flask_app 2>/dev/null || true
 
-                    docker run -d \
-                    --name flask_app \
-                    --restart always \
-                    -p 5000:5000 \
-                    -e DB_HOST=${RDS_ENDPOINT} \
-                    -e DB_USER=admin \
-                    -e DB_PASS=${RDS_PASSWORD} \
-                    -e DB_NAME=taskdb \
-                    -e S3_BUCKET=${S3_BUCKET} \
-                    -e AWS_REGION=${AWS_REGION} \
-                    ${IMAGE_NAME}:latest
-                    "
-                    '''
-                }
+                docker run -d \\
+                --name flask_app \\
+                --restart always \\
+                -p 5000:5000 \\
+                -e DB_HOST=${RDS_ENDPOINT} \\
+                -e DB_USER=admin \\
+                -e DB_PASS=${RDS_PASSWORD} \\
+                -e DB_NAME=taskdb \\
+                -e S3_BUCKET=${S3_BUCKET} \\
+                -e AWS_REGION=${AWS_REGION} \\
+                ${IMAGE_NAME}:latest
+                "
+                """
             }
         }
 
