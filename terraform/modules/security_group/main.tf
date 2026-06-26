@@ -12,7 +12,14 @@ resource "aws_security_group" "ec2_sg" {
       var.my_ip
     ]
   }
-
+  
+  ingress {
+    description = "SSH from Jenkins Build Node"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["13.207.192.181/32"] # Replace with the actual IP from Step 1
+  }
   ingress {
     description = "Flask app"
     from_port   = 5000
