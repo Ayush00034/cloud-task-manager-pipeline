@@ -4,7 +4,8 @@ pipeline {
     }
 
     environment {
-        IMAGE_NAME = 'cloud-task-manager'
+    IMAGE_NAME = 'cloud-task-manager'
+    APP_SERVER_HOST = credentials('app-server-host')
     }
 
     stages {
