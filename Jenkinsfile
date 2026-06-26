@@ -23,16 +23,19 @@ pipeline {
         }
 
         stage('Test') {
-        steps {
+    steps {
         sh '''
-        echo "Running basic tests..."
+        echo "Setting up virtual environment..."
 
-        python3 -m pip install --upgrade pip
-        python3 -m pip install -r requirements.txt
+        python3 -m venv venv
+        source venv/bin/activate
 
-        python3 -c "from app.app import app; print('Import OK')"
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+        python -c "from app.app import app; print('Import OK')"
         '''
-             }
+          }
         }
 
         stage('Terraform Apply') {
