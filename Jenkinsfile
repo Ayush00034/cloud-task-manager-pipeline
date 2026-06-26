@@ -24,7 +24,7 @@ pipeline {
 
     post {
         success {
-            echo 'Credential test passed.'
+            echo 'Credential test passed try 2.'
         }
 
         failure {
