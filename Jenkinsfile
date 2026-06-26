@@ -17,6 +17,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Pulling code from GitHub onto the Build Node...'
+                echo "2nd"
                 checkout scm
             }
         }
