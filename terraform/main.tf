@@ -6,7 +6,15 @@ terraform {
     }
   }
 }
-
+terraform {
+  backend "s3" {
+    bucket       = "ayush-vvce-tfstate-2026" # The exact name of the bucket you just created
+    key          = "vpc-infrastructure/terraform.tfstate"
+    region       = "ap-south-1"              # The exact region where you created the bucket
+    use_lockfile = true                      # Enables native S3 locking (No DynamoDB needed!)
+    encrypt      = true
+  }
+}
 provider "aws" {
   region = var.aws_region
 }
