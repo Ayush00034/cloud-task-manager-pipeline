@@ -23,13 +23,16 @@ pipeline {
         }
 
         stage('Test') {
-            steps {
-                sh '''
-                echo 'Running basic tests on the Build Node... 1'
-                python3 -m pip install pytest flask --quiet --break-system-packages
-                python3 -c "from app.app import app; print('Import OK')"
-                '''
-            }
+        steps {
+        sh '''
+        echo "Running basic tests..."
+
+        python3 -m pip install --upgrade pip
+        python3 -m pip install -r requirements.txt
+
+        python3 -c "from app.app import app; print('Import OK')"
+        '''
+             }
         }
 
         stage('Terraform Apply') {
