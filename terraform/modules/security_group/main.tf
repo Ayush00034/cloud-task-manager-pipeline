@@ -18,7 +18,7 @@ resource "aws_security_group" "ec2_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["13.207.192.181/32"] # Replace with the actual IP from Step 1
+    cidr_blocks = ["65.2.153.205/32"] 
   }
   ingress {
     description = "Flask app"
