@@ -25,7 +25,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh '''
-                echo 'Running basic tests on the Build Node...'
+                echo 'Running basic tests on the Build Node... 1'
                 python3 -m pip install pytest flask --quiet --break-system-packages
                 python3 -c "from app.app import app; print('Import OK')"
                 '''
