@@ -113,7 +113,7 @@ pipeline {
         }
 
         failure {
-            echo 'Pipeline failed. Check logs above.'
+            echo 'Pipeline failed. Check logs above..'
         }
     }
 }
