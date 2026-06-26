@@ -40,7 +40,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                echo 'Provisioning/updating App Server, RDS, S3 via Terraform...'
+                echo 'Provisioning/updating App Server, RDS, S3 via Terraform....'
 
                 dir('terraform') {
                     sh '''
