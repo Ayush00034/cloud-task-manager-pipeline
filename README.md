@@ -76,41 +76,53 @@ cloud-task-manager/
 ### Jenkins
 
 **Full CI/CD pipeline run**
+
 ![Jenkins Pipeline](docs/jenkins.png)
 
 **Jenkins dashboard — all pipeline jobs**
+
 ![Jenkins Jobs](docs/jenkins2.png)
 
 **Build Node registered as Jenkins Agent**
+
 ![Jenkins Node](docs/node.png)
 
 ### Docker
 
 **Docker image built on the Build Node (agent)**
+
 ![Docker Image on Agent](docs/docker_iamges-agent_server.png)
 
 **Docker container running on the App Server**
+
 ![Docker Container on App Server](docs/docker_ps_app-server.png)
 
 ### AWS Infrastructure
 
 **EC2 — App Server instance**
+
 ![EC2 Instance](docs/instance.png)
 
 **RDS — MySQL database**
+
 ![RDS Database](docs/db.png)
 
 **S3 — Uploads bucket**
+
 ![S3 Bucket](docs/s3.png)
 
 **VPC — Networking setup**
+
 ![VPC Subnets](docs/vpc.png)
 
 ### Application
 
 **Cloud Task Manager — live dashboard**
+
 ![App Dashboard](docs/dashboard.png)
 
 ---
 
 *Built as a portfolio project demonstrating Terraform, Jenkins Controller/Agent CI/CD, Docker, and AWS cloud architecture.*
+
+by [Ayush Chandrakar](https://github.com/Ayush00034)
