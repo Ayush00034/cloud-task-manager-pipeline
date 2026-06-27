@@ -21,7 +21,7 @@ GitHub --(webhook)--> Jenkins Controller --(SSH agent)--> Build Node (Terraform 
                                                             |        |
                                                        RDS MySQL    S3
 
-![Architecture](docs/architecture.png)
+![Architecture](/docs/architecture.png)
 
 ![Jenkins Pipeline](docs/jenkins.png)
 
@@ -36,10 +36,7 @@ GitHub --(webhook)--> Jenkins Controller --(SSH agent)--> Build Node (Terraform 
 - **App:** Python Flask, SQLAlchemy, Boto3
 - **Containers:** Docker, Docker Compose (local dev only)
 
-## Live Demo
 
-- App: `http://<APP_SERVER_IP>:5000`
-- Jenkins: `http://<JENKINS_CONTROLLER_IP>:8080`
 
 ## Setup
 
@@ -62,7 +59,6 @@ cloud-task-manager/
 │   ├── requirements.txt
 │   └── templates/
 ├── Dockerfile
-├── docker-compose.yml      # local dev only
 ├── Jenkinsfile
 └── terraform/
     ├── main.tf
