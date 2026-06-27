@@ -21,7 +21,9 @@ GitHub --(webhook)--> Jenkins Controller --(SSH agent)--> Build Node (Terraform 
                                                             |        |
                                                        RDS MySQL    S3
 
-![Architecture](/docs/architecture.png)
+```
+
+![Architecture](docs/architecture.png)
 
 ![Jenkins Pipeline](docs/jenkins.png)
 
